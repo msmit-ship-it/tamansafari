@@ -1,0 +1,8 @@
+/dashboard-taman-safari/
+├── index.html
+├── css/
+│   └── style.css (opsional jika CSS dipisah dari HTML)
+├── js/
+│   └── script.js (opsional jika JavaScript dipisah dari HTML)
+└── assets/
+    └── images/ (jika ada gambar)
