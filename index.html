@@ -3,194 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Penjualan Tiket - Taman Safari</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Login - Dashboard Penjualan Tiket</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f9;
             display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
         }
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px 20px;
+        .login-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            width: 300px;
             text-align: center;
         }
-        .container {
-            flex: 1;
-            padding: 20px;
-        }
-        .card {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 10px 0;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-        }
-        .card i {
-            font-size: 40px;
-            margin-right: 15px;
+        .login-container h1 {
+            margin-bottom: 20px;
             color: #4CAF50;
         }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        table {
+        .login-container input {
             width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        table th, table td {
-            border: 1px solid #ddd;
             padding: 10px;
-            text-align: center;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
         }
-        table th {
+        .login-container button {
+            width: 100%;
+            padding: 10px;
             background-color: #4CAF50;
             color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
         }
-        canvas {
-            margin: 20px 0;
+        .login-container button:hover {
+            background-color: #45a049;
         }
-        footer {
-            background-color: #4CAF50;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            margin-top: 20px;
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        /* Dashboard Styling */
+        #dashboard {
+            display: none;
+            flex-direction: column;
+            height: 100vh;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1><i class="fas fa-paw"></i> Dashboard Penjualan Tiket - Taman Safari</h1>
-        <p>Lokasi: Taman Safari</p>
-    </header>
+    <!-- Login Page -->
+    <div class="login-container" id="loginPage">
+        <h1><i class="fas fa-lock"></i> Login</h1>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit">Login</button>
+            <p class="error-message" id="errorMessage"></p>
+        </form>
+    </div>
 
-    <div class="container">
-        <!-- Summary Section -->
-        <div class="grid">
-            <div class="card">
-                <i class="fas fa-users"></i>
-                <div>
-                    <h3>Total Pengunjung Hari Ini</h3>
-                    <p id="totalVisitors">0</p>
-                </div>
-            </div>
-            <div class="card">
-                <i class="fas fa-dollar-sign"></i>
-                <div>
-                    <h3>Total Pendapatan Hari Ini</h3>
-                    <p id="totalRevenue">Rp 0</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Rincian Pendapatan -->
-        <div class="card">
-            <h3><i class="fas fa-chart-line"></i> Rincian Pendapatan per Wahana</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nama Wahana</th>
-                        <th>Jumlah Pengunjung</th>
-                        <th>Total Pendapatan</th>
-                        <th>Transaksi</th>
-                    </tr>
-                </thead>
-                <tbody id="wahanaData">
-                    <!-- Dynamic data will be injected here -->
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Grafik Pendapatan -->
-        <div class="card">
-            <h3><i class="fas fa-chart-bar"></i> Grafik Pendapatan Harian</h3>
-            <canvas id="dailyRevenueChart"></canvas>
+    <!-- Dashboard -->
+    <div id="dashboard">
+        <header>
+            <h1><i class="fas fa-paw"></i> Dashboard Penjualan Tiket - Taman Safari</h1>
+        </header>
+        <div class="container">
+            <h2>Selamat datang di Dashboard Penjualan Tiket</h2>
+            <p>Isi konten dashboard di sini...</p>
         </div>
     </div>
 
-    <footer>
-        <p>Dibuat oleh Yoel Liem © 2024</p>
-    </footer>
-
     <script>
-        // Constants
-        const ticketPrice = 13500;
-        const wahanaList = ["Safari Adventure", "Bird Show", "Elephant Show", "Aquarium", "Reptile House", "Carnival Area", "Lion Feeding"];
-        const transactionPerWahana = 2;
+        // Dummy Login Credentials
+        const validCredentials = {
+            username: "admin",
+            password: "12345"
+        };
 
-        // Generate random transactions for each wahana
-        const wahanaData = wahanaList.map(wahana => {
-            const transactions = Array.from({ length: transactionPerWahana }, () => Math.floor(Math.random() * 5 + 1)); // 1 to 5 tickets per transaction
-            const totalTickets = transactions.reduce((sum, value) => sum + value, 0);
-            const totalRevenue = totalTickets * ticketPrice;
+        // Login Form Handling
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const errorMessage = document.getElementById("errorMessage");
 
-            return {
-                name: wahana,
-                totalTickets,
-                totalRevenue,
-                transactions
-            };
-        });
-
-        // Calculate Totals
-        const totalVisitors = wahanaData.reduce((sum, wahana) => sum + wahana.totalTickets, 0);
-        const totalRevenue = wahanaData.reduce((sum, wahana) => sum + wahana.totalRevenue, 0);
-
-        // Populate Summary
-        document.getElementById('totalVisitors').innerText = totalVisitors.toLocaleString();
-        document.getElementById('totalRevenue').innerText = `Rp ${totalRevenue.toLocaleString()}`;
-
-        // Populate Wahana Table
-        const wahanaTable = document.getElementById('wahanaData');
-        wahanaData.forEach(wahana => {
-            const row = `
-                <tr>
-                    <td>${wahana.name}</td>
-                    <td>${wahana.totalTickets}</td>
-                    <td>Rp ${wahana.totalRevenue.toLocaleString()}</td>
-                    <td>${wahana.transactions.join(", ")} tickets</td>
-                </tr>
-            `;
-            wahanaTable.innerHTML += row;
-        });
-
-        // Generate Daily Revenue Chart
-        const ctx = document.getElementById('dailyRevenueChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: wahanaList,
-                datasets: [{
-                    label: 'Pendapatan Harian (Rp)',
-                    data: wahanaData.map(wahana => wahana.totalRevenue),
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: value => `Rp ${value.toLocaleString()}`
-                        }
-                    }
-                }
+            if (username === validCredentials.username && password === validCredentials.password) {
+                // Hide Login Page and Show Dashboard
+                document.getElementById("loginPage").style.display = "none";
+                document.getElementById("dashboard").style.display = "flex";
+            } else {
+                // Show Error Message
+                errorMessage.textContent = "Username atau Password salah!";
             }
         });
     </script>
